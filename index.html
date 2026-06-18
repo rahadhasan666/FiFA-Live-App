@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIFA Live APK - Watch Live Football in 4K 60FPS</title>
+    <meta name="description" content="Download FIFA Live APK for Android. Watch live football in 4K 60FPS with no buffer and ultra-smooth streaming. Worldwide live matches supported.">
+    <style>
+        :root {
+            --bg-deep: #06060f;
+            --bg-navy: #0a0c1a;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --red-accent: #e63946;
+            --red-glow: #ff3b4e;
+            --blue-accent: #3a6fd8;
+            --blue-glow: #5b8af7;
+            --green-accent: #22c55e;
+            --green-glow: #3dfc7a;
+            --text-primary: #f1f1f5;
+            --text-secondary: #b0b3c5;
+            --text-muted: #7a7d90;
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-glow: rgba(255, 255, 255, 0.12);
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 20px;
+            --radius-xl: 24px;
+            --transition-fast: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+            background-size: 28px 28px;
+            opacity: 0.7;
+        }
+
+        .bg-blobs {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.18;
+            will-change: transform;
+        }
+
+        .bg-blob--1 {
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, #e63946 0%, transparent 70%);
+            top: -15%;
+            left: -10%;
+            animation: blobFloat1 18s ease-in-out infinite;
+        }
+
+        .bg-blob--2 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, #3a6fd8 0%, transparent 70%);
+            top: 40%;
+            right: -12%;
+            animation: blobFloat2 22s ease-in-out infinite;
+        }
+
+        .bg-blob--3 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #7c3aed 0%, transparent 70%);
+            bottom: -10%;
+            left: 30%;
+            animation: blobFloat3 20s ease-in-out infinite;
+        }
+
+        .bg-blob--4 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #22c55e 0%, transparent 65%);
+            top: 55%;
+            left: 55%;
+            animation: blobFloat4 16s ease-in-out infinite;
+            opacity: 0.1;
+        }
+
+        @keyframes blobFloat1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(120px, -80px) scale(1.15); }
+            50% { transform: translate(-40px, 60px) scale(0.9); }
+            75% { transform: translate(-90px, -30px) scale(1.1); }
+        }
+
+        @keyframes blobFloat2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(-100px, 70px) scale(1.1); }
+            50% { transform: translate(50px, -50px) scale(0.85); }
+            75% { transform: translate(80px, 20px) scale(1.2); }
+        }
+
+        @keyframes blobFloat3 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(-70px, -60px) scale(1.15); }
+            66% { transform: translate(60px, 40px) scale(0.9); }
+        }
+
+        @keyframes blobFloat4 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-50px, -40px) scale(1.25); }
+        }
+
+        .page-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ============ HERO SECTION ============ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero__inner {
+            max-width: 720px;
+            width: 100%;
+        }
+
+        .hero__badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            border-radius: 50px;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            letter-spacing: 0.02em;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeSlideUp 0.7s 0.15s forwards;
+        }
+
+        .hero__badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--green-accent);
+            box-shadow: 0 0 10px var(--green-glow), 0 0 24px rgba(34, 197, 94, 0.5);
+            animation: dotPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { box-shadow: 0 0 8px var(--green-glow), 0 0 20px rgba(34, 197, 94, 0.4); }
+            50% { box-shadow: 0 0 18px var(--green-glow), 0 0 40px rgba(34, 197, 94, 0.8); }
+        }
+
+        .hero__title {
+            font-size: clamp(2.6rem, 7vw, 5rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e4f0 30%, #ff5e6b 65%, #ff8e98 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: translateY(25px);
+            animation: fadeSlideUp 0.7s 0.25s forwards;
+        }
+
+        .hero__subtitle {
+            font-size: clamp(1rem, 2.2vw, 1.25rem);
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeSlideUp 0.7s 0.4s forwards;
+        }
+
+        .hero__btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: linear-gradient(135deg, #16a34a 0%, #22c55e 40%, #4ade80 100%);
+            color: #fff;
+            font-size: 1.15rem;
+            font-weight: 700;
+            padding: 1rem 2.4rem;
+            border-radius: 50px;
+            text-decoration: none;
+            letter-spacing: 0.01em;
+            position: relative;
+            box-shadow: 0 0 40px rgba(34, 197, 94, 0.45), 0 0 80px rgba(34, 197, 94, 0.2), 0 8px 30px rgba(0, 0, 0, 0.4);
+            transition: all var(--transition-smooth);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeSlideUp 0.7s 0.55s forwards, btnGlowPulse 2.5s ease-in-out 1.5s infinite;
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+
+        .hero__btn:hover {
+            transform: translateY(-4px) scale(1.04);
+            box-shadow: 0 0 60px rgba(34, 197, 94, 0.6), 0 0 110px rgba(34, 197, 94, 0.35), 0 12px 40px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, #1bb84e 0%, #2dd468 40%, #5df595 100%);
+        }
+
+        .hero__btn:active {
+            transform: translateY(-1px) scale(0.98);
+            transition: all 0.1s ease;
+        }
+
+        .hero__btn-icon {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+
+        @keyframes fadeSlideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes btnGlowPulse {
+            0%, 100% { box-shadow: 0 0 40px rgba(34, 197, 94, 0.45), 0 0 80px rgba(34, 197, 94, 0.2), 0 8px 30px rgba(0, 0, 0, 0.4); }
+            50% { box-shadow: 0 0 65px rgba(34, 197, 94, 0.7), 0 0 120px rgba(34, 197, 94, 0.4), 0 8px 30px rgba(0, 0, 0, 0.4); }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            opacity: 0;
+            animation: fadeSlideUp 0.7s 0.8s forwards;
+            z-index: 3;
+        }
+
+        .scroll-indicator__text {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+        }
+
+        .scroll-indicator__line {
+            width: 2px;
+            height: 32px;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), transparent);
+            border-radius: 1px;
+            animation: scrollLine 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollLine {
+            0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+            50% { opacity: 1; transform: scaleY(1); }
+        }
+
+        /* ============ SECTION COMMONS ============ */
+        .section {
+            padding: 5rem 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section__header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .section__label {
+            display: inline-block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--red-accent);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .section__title {
+            font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+            font-weight: 750;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #ffffff 0%, #d0d5e8 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section__title--green {
+            background: linear-gradient(135deg, #ffffff 0%, #c8f0d5 40%, #4ade80 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ============ FEATURES SECTION ============ */
+        .features {
+            padding-top: 3rem;
+            padding-bottom: 5rem;
+        }
+
+        .features__grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 520px) {
+            .features__grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        }
+
+        @media (min-width: 900px) {
+            .features__grid { grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 2rem 1.5rem 1.75rem;
+            text-align: center;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: all var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+            opacity: 0;
+            transform: translateY(30px);
+            will-change: transform, box-shadow;
+        }
+
+        .feature-card.visible {
+            animation: cardReveal 0.65s forwards;
+        }
+
+        .feature-card:nth-child(1).visible { animation-delay: 0.05s; }
+        .feature-card:nth-child(2).visible { animation-delay: 0.15s; }
+        .feature-card:nth-child(3).visible { animation-delay: 0.25s; }
+        .feature-card:nth-child(4).visible { animation-delay: 0.35s; }
+
+        @keyframes cardReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity var(--transition-smooth);
+            pointer-events: none;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--border-glow);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(230, 57, 70, 0.15), 0 0 80px rgba(58, 111, 216, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .feature-card:hover::before { opacity: 1; }
+
+        .feature-card__icon-wrap {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all var(--transition-smooth);
+        }
+
+        .feature-card:hover .feature-card__icon-wrap {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 30px rgba(230, 57, 70, 0.3);
+        }
+
+        .feature-card__icon {
+            width: 28px;
+            height: 28px;
+            color: #e0e4f0;
+            transition: all var(--transition-smooth);
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-card:hover .feature-card__icon {
+            color: #fff;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+        }
+
+        .feature-card__title {
+            font-size: 1.05rem;
+            font-weight: 650;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .feature-card__desc {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ============ SCREENSHOTS CAROUSEL (FULL PORTRAIT) ============ */
+        .screenshots {
+            padding-top: 2rem;
+            padding-bottom: 5rem;
+        }
+
+        .carousel-wrapper {
+            max-width: 100%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .carousel-viewport {
+            overflow: hidden;
+            padding: 1.5rem 0;
+            margin: 0 -1.5rem;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+            cursor: grab;
+            /* Very subtle edge fades – no cropping */
+            -webkit-mask-image: linear-gradient(to right,
+                    transparent 0%,
+                    black 2%,
+                    black 98%,
+                    transparent 100%);
+            mask-image: linear-gradient(to right,
+                    transparent 0%,
+                    black 2%,
+                    black 98%,
+                    transparent 100%);
+        }
+
+        @media (min-width: 768px) {
+            .carousel-viewport {
+                margin: 0 -3rem;
+                padding-left: 3rem;
+                padding-right: 3rem;
+            }
+        }
+
+        .carousel-track {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;  /* ensures slides keep their natural height */
+            will-change: transform;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        @media (min-width: 600px) {
+            .carousel-track { gap: 1.25rem; }
+        }
+
+        .carousel-slide {
+            flex-shrink: 0;
+            width: 200px;           /* fixed width for portrait card */
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: all var(--transition-smooth);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            /* No fixed height – image dictates height */
+        }
+
+        @media (min-width: 600px) {
+            .carousel-slide { width: 240px; }
+        }
+
+        @media (min-width: 900px) {
+            .carousel-slide { width: 280px; }
+        }
+
+        .carousel-slide:hover {
+            transform: scale(1.06);
+            z-index: 10;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(230, 57, 70, 0.3), 0 0 70px rgba(58, 111, 216, 0.2);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .carousel-slide img {
+            display: block;
+            width: 100%;
+            height: auto;            /* preserve portrait aspect ratio */
+            object-fit: initial;     /* no cropping */
+            border-radius: var(--radius-lg);
+            transition: transform var(--transition-smooth);
+            pointer-events: none;
+        }
+
+        .carousel-slide:hover img {
+            transform: scale(1.02);
+        }
+
+        /* The side fades are now minimal – just a soft gradient, no content loss */
+        .carousel-fade-left,
+        .carousel-fade-right {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 30px;            /* very narrow */
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .carousel-fade-left {
+            left: 0;
+            background: linear-gradient(to right, var(--bg-deep) 0%, transparent 100%);
+        }
+
+        .carousel-fade-right {
+            right: 0;
+            background: linear-gradient(to left, var(--bg-deep) 0%, transparent 100%);
+        }
+
+        /* ============ DOWNLOAD CTA SECTION ============ */
+        .download-cta {
+            text-align: center;
+            padding: 5rem 1.5rem 6rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .download-cta__inner {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            padding: 3rem 2rem;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all var(--transition-slow);
+        }
+
+        .download-cta__inner.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .download-cta__inner::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            background: linear-gradient(135deg,
+                    rgba(230, 57, 70, 0.25),
+                    rgba(58, 111, 216, 0.25),
+                    rgba(34, 197, 94, 0.2));
+            z-index: -1;
+            opacity: 0.5;
+            filter: blur(30px);
+            transition: opacity var(--transition-smooth);
+        }
+
+        .download-cta__inner:hover::before { opacity: 0.8; }
+
+        .download-cta__title {
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            font-weight: 750;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+            background: linear-gradient(135deg, #ffffff 0%, #d8f5e0 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .download-cta__subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .download-cta__btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: linear-gradient(135deg, #16a34a 0%, #22c55e 40%, #4ade80 100%);
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding: 1.1rem 2.8rem;
+            border-radius: 50px;
+            text-decoration: none;
+            letter-spacing: 0.01em;
+            box-shadow: 0 0 50px rgba(34, 197, 94, 0.5), 0 0 100px rgba(34, 197, 94, 0.25), 0 10px 35px rgba(0, 0, 0, 0.45);
+            transition: all var(--transition-smooth);
+            cursor: pointer;
+            border: none;
+            outline: none;
+            animation: btnGlowPulse 2.5s ease-in-out infinite;
+        }
+
+        .download-cta__btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 0 70px rgba(34, 197, 94, 0.7), 0 0 130px rgba(34, 197, 94, 0.4), 0 14px 45px rgba(0, 0, 0, 0.55);
+            background: linear-gradient(135deg, #1bb84e 0%, #2dd468 40%, #5df595 100%);
+        }
+
+        .download-cta__btn:active {
+            transform: translateY(-2px) scale(0.97);
+            transition: all 0.1s ease;
+        }
+
+        .download-cta__btn-icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        /* ============ FOOTER ============ */
+        .footer {
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            border-top: 1px solid var(--border-subtle);
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer__text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: 0.02em;
+        }
+
+        /* ============ RESPONSIVE ADJUSTMENTS ============ */
+        @media (max-width: 480px) {
+            .hero {
+                padding: 2rem 1rem;
+                min-height: 95vh;
+            }
+            .hero__btn {
+                font-size: 1rem;
+                padding: 0.9rem 2rem;
+                width: 100%;
+                justify-content: center;
+            }
+            .download-cta__btn {
+                font-size: 1.05rem;
+                padding: 0.95rem 2rem;
+                width: 100%;
+                justify-content: center;
+            }
+            .carousel-slide {
+                width: 180px;   /* narrower on mobile for portrait view */
+            }
+            .section {
+                padding: 3.5rem 1rem;
+            }
+            .download-cta__inner {
+                padding: 2rem 1.25rem;
+            }
+            .feature-card {
+                padding: 1.5rem 1.25rem;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .carousel-slide {
+                width: 300px;
+            }
+            .carousel-track {
+                gap: 1.5rem;
+            }
+            .section {
+                padding: 6rem 3rem;
+            }
+        }
+
+        /* Accessibility & focus */
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid var(--green-accent);
+            outline-offset: 3px;
+            border-radius: 50px;
+        }
+
+        .carousel-slide:focus-visible {
+            outline: 2px solid var(--blue-accent);
+            outline-offset: 4px;
+            border-radius: var(--radius-lg);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .bg-blob,
+            .carousel-track,
+            .hero__btn,
+            .download-cta__btn,
+            .scroll-indicator__line {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .carousel-track { transform: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-blobs" aria-hidden="true">
+        <div class="bg-blob bg-blob--1"></div>
+        <div class="bg-blob bg-blob--2"></div>
+        <div class="bg-blob bg-blob--3"></div>
+        <div class="bg-blob bg-blob--4"></div>
+    </div>
+
+    <div class="page-content">
+        <!-- HERO -->
+        <section class="hero" id="hero">
+            <div class="hero__inner">
+                <div class="hero__badge">
+                    <span class="hero__badge-dot" aria-hidden="true"></span>
+                    Latest Version Available
+                </div>
+                <h1 class="hero__title">FIFA Live APK</h1>
+                <p class="hero__subtitle">
+                    Watch Live Football in 4K 60FPS &bull; No Buffer &bull; Ultra Smooth Streaming
+                </p>
+                <a href="https://file.kiwi/c607f738#lItcyoHOzx-5H1lPdS4hZw"
+                   class="hero__btn"
+                   rel="noopener noreferrer"
+                   aria-label="Download FIFA Live APK">
+                    <svg class="hero__btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Download APK
+                </a>
+            </div>
+            <div class="scroll-indicator" aria-hidden="true">
+                <span class="scroll-indicator__text">Scroll</span>
+                <div class="scroll-indicator__line"></div>
+            </div>
+        </section>
+
+        <!-- FEATURES -->
+        <section class="section features" id="features">
+            <div class="section__header">
+                <span class="section__label">Why Choose Us</span>
+                <h2 class="section__title">Built for Football Fans</h2>
+            </div>
+            <div class="features__grid">
+                <div class="feature-card" data-reveal>
+                    <div class="feature-card__icon-wrap">
+                        <svg class="feature-card__icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="6" width="28" height="18" rx="2"/>
+                            <polyline points="6 2 6 6"/>
+                            <polyline points="26 2 26 6"/>
+                            <circle cx="16" cy="16" r="2" fill="currentColor"/>
+                            <path d="M10 16h4M18 16h4"/>
+                            <line x1="16" y1="12" x2="16" y2="14"/>
+                            <line x1="16" y1="18" x2="16" y2="20"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-card__title">4K Ultra HD Streaming</h3>
+                    <p class="feature-card__desc">Crystal-clear resolution at 60 frames per second for an immersive viewing experience.</p>
+                </div>
+                <div class="feature-card" data-reveal>
+                    <div class="feature-card__icon-wrap">
+                        <svg class="feature-card__icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 30 21 18 13 18 14 2" fill="currentColor" stroke="none" opacity="0.7"/>
+                            <polygon points="13 2 3 14 12 14 11 30 21 18 13 18 14 2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-card__title">No Buffer Experience</h3>
+                    <p class="feature-card__desc">Optimized servers deliver instant playback with zero buffering, even on slower connections.</p>
+                </div>
+                <div class="feature-card" data-reveal>
+                    <div class="feature-card__icon-wrap">
+                        <svg class="feature-card__icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="6" y="2" width="20" height="28" rx="4"/>
+                            <line x1="12" y1="26" x2="20" y2="26"/>
+                            <circle cx="16" cy="8" r="3"/>
+                            <path d="M11 22a5 5 0 0 1 10 0"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-card__title">Android APK Supported</h3>
+                    <p class="feature-card__desc">Seamless installation on all Android devices. Lightweight APK with regular updates.</p>
+                </div>
+                <div class="feature-card" data-reveal>
+                    <div class="feature-card__icon-wrap">
+                        <svg class="feature-card__icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="16" cy="16" r="12"/>
+                            <ellipse cx="16" cy="16" rx="6" ry="12"/>
+                            <line x1="4" y1="16" x2="28" y2="16"/>
+                            <line x1="16" y1="4" x2="16" y2="8"/>
+                            <line x1="16" y1="24" x2="16" y2="28"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-card__title">Worldwide Live Matches</h3>
+                    <p class="feature-card__desc">Access live football from leagues across the globe — Premier League, La Liga, Serie A &amp; more.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SCREENSHOTS (FULL PORTRAIT CAROUSEL) -->
+        <section class="section screenshots" id="screenshots">
+            <div class="section__header">
+                <span class="section__label">App Preview</span>
+                <h2 class="section__title">Stunning Interface</h2>
+            </div>
+            <div class="carousel-wrapper">
+                <div class="carousel-viewport" id="carouselViewport">
+                    <div class="carousel-track" id="carouselTrack"></div>
+                </div>
+                <div class="carousel-fade-left" aria-hidden="true"></div>
+                <div class="carousel-fade-right" aria-hidden="true"></div>
+            </div>
+        </section>
+
+        <!-- DOWNLOAD CTA -->
+        <section class="download-cta" id="download">
+            <div class="download-cta__inner" data-reveal>
+                <h2 class="download-cta__title">Download FIFA Live APK Now</h2>
+                <p class="download-cta__subtitle">
+                    Join millions of football fans streaming live matches in stunning 4K quality. Install the APK and start watching instantly.
+                </p>
+                <a href="https://file.kiwi/c607f738#lItcyoHOzx-5H1lPdS4hZw"
+                   class="download-cta__btn"
+                   rel="noopener noreferrer"
+                   aria-label="Download FIFA Live APK Now">
+                    <svg class="download-cta__btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Download APK
+                </a>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <p class="footer__text">&copy; 2026 FIFA Live APK &nbsp;|&nbsp; All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <script>
+        (function() {
+            const imageUrls = [
+                'https://i.ibb.co/qLxh3tHZ/Screenshot-20260618-165901.png',
+                'https://i.ibb.co/q6v8P0S/Screenshot-20260618-165856.png',
+                'https://i.ibb.co/5g5Bvt1G/Screenshot-20260618-165851.png',
+                'https://i.ibb.co/KxqCtMtL/Screenshot-20260618-165847.png',
+                'https://i.ibb.co/Cspyp0TJ/Screenshot-20260618-165828.png',
+                'https://i.ibb.co/BV1RqJty/Screenshot-20260618-165831.png',
+                'https://i.ibb.co/vCP6rqx8/Screenshot-20260618-165820.png',
+            ];
+
+            const track = document.getElementById('carouselTrack');
+            const viewport = document.getElementById('carouselViewport');
+
+            function createSlide(url, index) {
+                const div = document.createElement('div');
+                div.className = 'carousel-slide';
+                div.setAttribute('role', 'group');
+                div.setAttribute('aria-label', 'App screenshot ' + (index + 1));
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = 'FIFA Live APK Screenshot ' + (index + 1);
+                img.loading = 'lazy';
+                img.draggable = false;
+                img.onerror = function() {
+                    this.style.background = 'rgba(255,255,255,0.03)';
+                    this.style.minHeight = '250px';
+                    this.alt = 'Image loading...';
+                };
+                div.appendChild(img);
+                return div;
+            }
+
+            imageUrls.forEach((url, i) => {
+                track.appendChild(createSlide(url, i));
+            });
+
+            const originalSlides = Array.from(track.children);
+            originalSlides.forEach(slide => {
+                const clone = slide.cloneNode(true);
+                clone.setAttribute('aria-hidden', 'true');
+                track.appendChild(clone);
+            });
+
+            let slideWidth = 0;
+            let gap = 0;
+            let totalOriginalWidth = 0;
+            let offset = 0;
+            const speedPerSecond = 70;
+            let isHovered = false;
+            let animationId = null;
+            let lastTime = 0;
+
+            function recalculateDimensions() {
+                if (originalSlides.length === 0) return;
+                const firstSlide = originalSlides[0];
+                slideWidth = firstSlide.offsetWidth;
+                const computedGap = getComputedStyle(track).gap;
+                gap = parseFloat(computedGap) || 16;
+                totalOriginalWidth = (slideWidth + gap) * originalSlides.length;
+                if (offset < -totalOriginalWidth || offset > 0) {
+                    offset = offset % totalOriginalWidth;
+                    if (offset > 0) offset -= totalOriginalWidth;
+                }
+                track.style.transform = 'translateX(' + offset + 'px)';
+            }
+
+            function animate(timestamp) {
+                if (!lastTime) lastTime = timestamp;
+                const delta = timestamp - lastTime;
+                lastTime = timestamp;
+
+                if (!isHovered && delta < 200) {
+                    const deltaSeconds = delta / 1000;
+                    offset -= speedPerSecond * deltaSeconds;
+                    if (offset <= -totalOriginalWidth) offset += totalOriginalWidth;
+                    if (offset > 0) offset -= totalOriginalWidth;
+                    track.style.transform = 'translateX(' + offset + 'px)';
+                }
+                animationId = requestAnimationFrame(animate);
+            }
+
+            function startCarousel() {
+                recalculateDimensions();
+                lastTime = 0;
+                if (animationId) cancelAnimationFrame(animationId);
+                animationId = requestAnimationFrame(animate);
+            }
+
+            function stopCarousel() {
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                    animationId = null;
+                }
+            }
+
+            viewport.addEventListener('mouseenter', () => {
+                isHovered = true;
+                viewport.style.cursor = 'grab';
+            });
+
+            viewport.addEventListener('mouseleave', () => {
+                isHovered = false;
+                viewport.style.cursor = 'default';
+            });
+
+            viewport.addEventListener('touchstart', () => {
+                isHovered = true;
+            }, { passive: true });
+
+            viewport.addEventListener('touchend', () => {
+                setTimeout(() => {
+                    if (!viewport.matches(':hover')) {
+                        isHovered = false;
+                    }
+                }, 1500);
+            });
+
+            viewport.setAttribute('tabindex', '0');
+            viewport.setAttribute('role', 'region');
+            viewport.setAttribute('aria-label', 'App screenshots carousel');
+            viewport.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    isHovered = true;
+                    offset += (slideWidth + gap);
+                    if (offset > 0) offset -= totalOriginalWidth;
+                    track.style.transform = 'translateX(' + offset + 'px)';
+                    track.style.transition = 'transform 0.35s cubic-bezier(0.4,0,0.2,1)';
+                    setTimeout(() => {
+                        track.style.transition = '';
+                        isHovered = false;
+                    }, 400);
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    isHovered = true;
+                    offset -= (slideWidth + gap);
+                    if (offset <= -totalOriginalWidth) offset += totalOriginalWidth;
+                    track.style.transform = 'translateX(' + offset + 'px)';
+                    track.style.transition = 'transform 0.35s cubic-bezier(0.4,0,0.2,1)';
+                    setTimeout(() => {
+                        track.style.transition = '';
+                        isHovered = false;
+                    }, 400);
+                }
+            });
+
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                stopCarousel();
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    recalculateDimensions();
+                    startCarousel();
+                }, 300);
+            });
+
+            startCarousel();
+
+            // Reveal animations
+            const revealElements = document.querySelectorAll('[data-reveal]');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { rootMargin: '0px 0px -60px 0px', threshold: 0.15 });
+
+            revealElements.forEach(el => observer.observe(el));
+
+            const featureCards = document.querySelectorAll('.feature-card');
+            const featureObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        featureObserver.unobserve(entry.target);
+                    }
+                });
+            }, { rootMargin: '0px 0px -40px 0px', threshold: 0.1 });
+
+            featureCards.forEach(card => featureObserver.observe(card));
+        })();
+    </script>
+</body>
+  </html>
